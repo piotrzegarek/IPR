@@ -1,7 +1,7 @@
 from app import app
+from flask import jsonify
 
-@app.route('/', methods=['GET'])
-def hello_world():
-    return {
-        'hello': 'world'
-    }
+
+@app.route("/")
+def read_root():
+    return jsonify(hello="dsa")
