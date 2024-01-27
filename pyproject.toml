@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "ipr"
+version = "0.1.0"
+description = ""
+authors = ["Your Name <you@example.com>"]
+license = "MIT Licence"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "3.10.2"
+flask = "3.0.1"
+flask-bcrypt = "1.0.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
