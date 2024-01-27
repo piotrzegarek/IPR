@@ -15,6 +15,16 @@ down:
 	@docker-compose down
 	@echo "${GREEN}Development server stopped...${NC}"
 
+db:
+	@echo "${GREEN}Creating database...${NC}"
+	@docker-compose exec app python manage.py create_db
+	@echo "${GREEN}Database created...${NC}"
+
+clear_db:
+	@echo "${GREEN}Recreating database...${NC}"
+	@docker-compose exec app python manage.py recreate_db
+	@echo "${GREEN}Database recreated...${NC}"
+
 help:
 	@echo "${GREEN}Django Application Makefile${NC}"
 	@echo "Available commands:"

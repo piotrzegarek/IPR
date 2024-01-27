@@ -3,29 +3,29 @@ services:
   app:
     build: .
     ports:
-      - "8000:8000"
-    command: ["python", "run.py"]
+      - "5001:5000"
     env_file:
       - .env
     volumes:
       - .:/code
     depends_on:
-      - postgres
+      - db
+    command: python manage.py run -h 0.0.0.0
 
-  postgres:
-    image: postgres:16
-    restart: always
-    env_file:
-      - .env
+  db:
+    environment:
+      POSTGRES_USER: test
+      POSTGRES_PASSWORD: test
+      POSTGRES_DB: test
+    image: postgres:latest
+    networks:
+      - default
     ports:
-      - "5434:5432"
+      - 5405:5432
+    restart: always
     volumes:
-      - postgres_data:/var/lib/postgresql/data/
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
-      interval: 5s
-      timeout: 3s
-      retries: 10
+      - ./postgres-data:/var/lib/postgresql/data
+
 
 volumes:
   postgres_data:

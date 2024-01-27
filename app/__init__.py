@@ -1,16 +1,14 @@
-import os
-from flask import Flask
-from flask_bcrypt import Bcrypt
+from flask import Flask, jsonify
+from flask_wtf import CSRFProtect
+# from app.models import db
+from app.config import Config
 
 
-SECRET_KEY = os.urandom(32)
-bcrypt = Bcrypt()
+app = Flask(__name__)
+app.config.from_object(Config)
+# db.init_app(app)
 
 
-def create_app():
-    app = Flask(__name__)
-    app.config['SECRET_KEY'] = os.getenv("SECRET_KEY", "*")
-    app.config.from_object('app.config.Config')
-    bcrypt.init_app(app)
-
-    return app
+@app.route("/")
+def read_root():
+    return jsonify(hello="world")

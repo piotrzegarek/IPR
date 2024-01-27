@@ -23,6 +23,6 @@ RUN poetry install --no-interaction --no-ansi
 # Copy project
 COPY . .
 
-EXPOSE 8000
+RUN chmod +x entrypoint.sh
 
-CMD ["python","run.py"]
+CMD ["/code/entrypoint.sh"]
