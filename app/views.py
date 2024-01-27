@@ -3,5 +3,9 @@ from flask import jsonify
 
 
 @app.route("/")
-def read_root():
-    return jsonify(hello="dsadasd")
+def home():
+    return jsonify(hello="world")
+
+@app.route("/login")
+def login():
+    return "Login"
