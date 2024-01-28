@@ -2,7 +2,7 @@ from flask import jsonify, redirect, url_for, request, render_template
 from flask_login import login_required, logout_user, current_user
 
 from app import app
-from .forms import LoginForm, ChangePasswordForm, WarehouseSearchForm, OfferCreateForm
+from .forms import LoginForm, ChangePasswordForm, WarehouseSearchForm, OfferCreateForm, OfferSearchForm
 from .auth import AuthService
 from .models import MachineController, Offer
 
@@ -22,7 +22,8 @@ def login():
     if request.method == 'POST' and form.validate():
         data = request.form
         auth = AuthService(data.get("username"))
-        if auth.login(password=data.get("password")):
+        if auth.validatePassword(password=data.get("password")):
+            auth.login(password=data.get("password"))
             return redirect(url_for("home"))
         else:
             error = True
@@ -67,9 +68,9 @@ def warehouse():
 @app.route("/offers")
 @login_required
 def offers():
-    pass
-    # buyer = Buyer()
-    # buyer.offer_controller.add()
+    form = OfferSearchForm()
+
+    return render_template("offers.html", form=form)
 
 
 @app.route("/offers/new", methods=['GET', 'POST'])
@@ -82,6 +83,7 @@ def new_offer():
             name=data.get("name"),
             description=data.get("description"),
             date=data.get("date"),
+            status=data.get("status"),
             author_id=current_user.id
         )
         buyer = Buyer()

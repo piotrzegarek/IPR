@@ -10,16 +10,18 @@ class AuthService:
         user_controller = UserController()
         self.user = user_controller.find_by_username(username=username)
 
-    def login(self, password: str) -> bool:
-        """Check credentials and login user."""
+    def login(self, password: str) -> None:
+        """Login user."""
+        self.user.authenticated = True
+        db.session.commit()
+        login_user(self.user)
+                
+    def validatePassword(self, password: str) -> bool:
+        """Check if entered passowrd matches the corret one."""
         if self.user:
             is_valid = bcrypt.check_password_hash(self.user.password, password)
-            if is_valid:
-                self.user.authenticated = True
-                db.session.commit()
-                login_user(self.user)
-                return True
-            
+            return is_valid
+        
         return False
 
     def changePassword(self, old_password: str, new_password: str, confirm_password: str) -> bool:

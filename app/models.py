@@ -154,7 +154,9 @@ class Offer(db.Model):
     name = db.Column(db.String(200), nullable=False, unique=True)
     description = db.Column(db.String(500), nullable=False)
     date = db.Column(db.Date, default=datetime.utcnow().date)
+    status = db.Column(db.String(200), nullable=False)
     author_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    approver_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=True)
 
 
 class OffersController(Controller):

@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block title %}Magazyn{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/offers.css') }}">
+{% endblock css %}
+
+{% block content %}
+
+<div class="main-box">
+    <a href="{{ url_for('home') }}" type="button" class="backBtn btn mt-3">Wroc</a>
+    <p class="title-text text-center">Oferty zakupowe</p>
+    <div class="form-wrapper">
+
+        <form class="search-form" method="POST" action="/warehouse">
+            {{ form.csrf_token }}
+            <div class="row mt-2">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label class="form-label">Nazwa</label>
+                        {{ form.name(class_="form-control") }}
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label class="form-label">Status</label>
+                        {{ form.status(class_="form-control") }}
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label class="form-label">Wystawil</label>
+                        {{ form.author(class_="form-control") }}
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group mt-2">
+                        <button type="submit" class="search-btn form-control btn mt-3">Szukaj</button>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group mt-2">
+                        <a href="{{ url_for('new_offer') }}" type="button" class="create-btn form-control btn mt-3">Stworz oferte</a>
+                    </div>
+                </div>
+            </div>
+
+        </form>
+
+    </div>
+    <div class="table-container">
+        <table class="table">
+        <thead>
+            <tr>
+                <th width="20%">Nazwa oferty</th>
+                <th width="20%">Status</th>
+                <th width="20%">Data wystawienia</th>
+                <th width="20%">Wystawil</th>
+                <th width="20%">Zatwierdzil</th>
+            </tr>
+        </thead>
+        <tbody>
+            {# {% for item in data %}
+                <tr>
+                    <td>{{item.name}}</td>
+                    <td>{{item.model}}</td>
+                    <td>{{item.count}}</td>
+                </tr>
+            {% endfor %} #}
+        </tbody>
+        </table>
+    </div>
+</div>
+{% endblock content %}

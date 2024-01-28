@@ -1,0 +1,70 @@
+.title-text {
+    font-size: 3rem;
+    font-weight: 500;
+    height: 10vh;
+    background-color: #16aa10;
+    padding: 1rem 0;
+    margin-bottom: 0;
+}
+
+.table-container {
+    height: 80vh;
+    background-color: #8cdf89;
+    overflow-y: auto;
+}
+
+.backBtn {
+    position: absolute;
+    top: 10px;
+    left: 20px;
+    background-color: #8cdf89;
+    font-size: 1.5rem;
+    width: 10%;
+}
+.backBtn:hover {
+    background-color: #bfddbe;
+}
+
+.form-wrapper {
+    height: 10vh;
+    background-color: #a6eea3;
+    display: flex;
+    justify-content: center;
+}
+
+.search-form {
+    width: 90%;
+}
+
+.search-btn,
+.create-btn  {
+    background-color: #16aa10;
+    height: 5vh;
+}
+
+.search-btn:hover,
+.search-btn:active,
+.search-btn:focus,
+.create-btn:hover,
+.create-btn:active,
+.create-btn:focus {
+    background-color: #69e065;
+}
+
+table {
+    font-size: 1.2rem;
+    border: 1px solid #000;
+}
+
+table td,
+table th {
+    border: 1px solid #000;
+}
+
+table th {
+    background-color: #69e065 !important;
+}
+
+.create-btn {
+    padding-top: 10px;
+}

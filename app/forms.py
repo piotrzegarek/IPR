@@ -20,4 +20,10 @@ class WarehouseSearchForm(FlaskForm):
 class OfferCreateForm(FlaskForm):
     name=StringField("Name", validators=[DataRequired()])
     description=TextAreaField("Name", validators=[DataRequired(), Length(min=1, max=500)])
+    status=StringField("Status", validators=[DataRequired()])
     date=DateField('Date', format='%Y-%m-%d', default=datetime.utcnow().date)
+
+class OfferSearchForm(FlaskForm):
+    name=StringField("Name")
+    status=StringField("Status")
+    author=StringField("Author")
