@@ -12,7 +12,7 @@
     <p class="title-text text-center">Oferty zakupowe</p>
     <div class="form-wrapper">
 
-        <form class="search-form" method="POST" action="/warehouse">
+        <form class="search-form" method="POST" action="/offers">
             {{ form.csrf_token }}
             <div class="row mt-2">
                 <div class="col-md-3">
@@ -21,16 +21,16 @@
                         {{ form.name(class_="form-control") }}
                     </div>
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-3">
                     <div class="form-group">
                         <label class="form-label">Status</label>
                         {{ form.status(class_="form-control") }}
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <div class="form-group">
-                        <label class="form-label">Wystawil</label>
-                        {{ form.author(class_="form-control") }}
+                        <label class="form-label">Data</label>
+                        {{ form.date(class_="form-control") }}
                     </div>
                 </div>
                 <div class="col-md-2">
@@ -60,13 +60,15 @@
             </tr>
         </thead>
         <tbody>
-            {# {% for item in data %}
+            {% for item in data %}
                 <tr>
                     <td>{{item.name}}</td>
-                    <td>{{item.model}}</td>
-                    <td>{{item.count}}</td>
+                    <td>{{item.status}}</td>
+                    <td>{{item.date}}</td>
+                    <td>{{item.author}}</td>
+                    <td>{{item.approver}}</td>
                 </tr>
-            {% endfor %} #}
+            {% endfor %}
         </tbody>
         </table>
     </div>

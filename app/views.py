@@ -4,7 +4,7 @@ from flask_login import login_required, logout_user, current_user
 from app import app
 from .forms import LoginForm, ChangePasswordForm, WarehouseSearchForm, OfferCreateForm, OfferSearchForm
 from .auth import AuthService
-from .models import MachineController, Offer
+from .models import MachineController, Offer, OffersController
 
 
 @app.route("/")
@@ -65,12 +65,24 @@ def warehouse():
     return render_template("warehouse.html", form=form, data=data)
 
 
-@app.route("/offers")
+@app.route("/offers", methods=['GET','POST'])
 @login_required
 def offers():
     form = OfferSearchForm()
+    controler = OffersController()
+    filters = {}
+    if request.method == 'POST' and form.validate():
+        if request.form.get("name"):
+            filters["name"] = request.form.get("name")
+        if request.form.get("status"):
+            filters["status"] = request.form.get("status")
+        if request.form.get("date"):
+            filters["date"] = request.form.get("date")
 
-    return render_template("offers.html", form=form)
+
+    data = controler.list(filters)
+
+    return render_template("offers.html", form=form, data=data)
 
 
 @app.route("/offers/new", methods=['GET', 'POST'])

@@ -158,6 +158,19 @@ class Offer(db.Model):
     author_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     approver_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=True)
 
+    @property
+    def author(self):
+        user = UserController().get(self.author_id)
+        return f"{user.imie} {user.nazwisko}"
+    
+    @property
+    def approver(self):
+        if self.approver_id:
+            user = UserController().get(self.approver_id)
+            return f"{user.imie} {user.nazwisko}"
+        else:
+            return "Nie zatwierdzone"
+        
 
 class OffersController(Controller):
     def add(self, obj: Offer) -> Offer:
@@ -175,7 +188,19 @@ class OffersController(Controller):
             db.session.commit()
 
     def list(self, filters: Optional[dict] = None):
-        pass
+        if filters:
+            offer_query = Offer.query.order_by(Offer.name)
+            if "name" in filters.keys():
+                offer_query = offer_query.filter(Offer.name.ilike(f"%{filters['name']}%"))
+            if "status" in filters.keys():
+                offer_query = offer_query.filter(Offer.status.ilike(f"%{filters['status']}%"))
+            if "date" in filters.keys():
+                offer_query = offer_query.filter(Offer.date == filters["date"])
+            offers = offer_query.all()
+        else:
+            offers = Offer.query.all()
+
+        return offers
 
     def get(self, id: int) -> Offer:
         offer = Offer.query.filter_by(id=id).first()
