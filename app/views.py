@@ -126,11 +126,8 @@ def edit_offer(id: int):
     form = OfferCreateForm(obj=offer)
 
     if request.method == 'POST' and form.validate():
-        offer.name = request.form.get("name")
-        offer.description = request.form.get("description")
-        offer.date = request.form.get("date")
-        offer.status = request.form.get("status")
-        db.session.commit()
+        buyer = Buyer()
+        buyer.edit_offer(offer.id, request.form)
         return redirect(url_for('view_offer', id=offer.id))
 
     return render_template("edit_offer.html", offer=offer, form=form)

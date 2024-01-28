@@ -15,10 +15,10 @@ services:
 
   db:
     environment:
-      POSTGRES_USER: test
-      POSTGRES_PASSWORD: test
-      POSTGRES_DB: test
-    image: postgres:latest
+      POSTGRES_PASSWORD: mypassword
+      POSTGRES_USER: piotrzegarek
+      POSTGRES_DB: mydb
+    image: postgres:16
     networks:
       - default
     ports:

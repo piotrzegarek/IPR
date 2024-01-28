@@ -45,6 +45,16 @@ class Buyer(db.Model):
     def __init__(self):
         self.offers_controller = OffersController()
         self.comments_controller = CommentsController()
+        
+    def edit_offer(self, offer_id: int, form_data):
+        self.offers_controller.patch({
+            "id": offer_id,
+            "name": form_data.get("name"),
+            "description": form_data.get("description"),
+            "date": form_data.get("date"),
+            "status": form_data.get("status")
+        })
+        
 
 
 class UserController(Controller):
@@ -68,6 +78,16 @@ class UserController(Controller):
     def get(self, id: int) -> User:
         user = User.query.filter_by(id=id).first()
         return user
+    
+    def patch(self, update_data: dict):
+        user = self.get(update_data.get("id"))
+        if "password" in update_data.keys():
+            user.password = update_data.get("password")
+        if "imie" in update_data.keys():
+            user.imie = update_data.get("imie")
+        if "nazwisko" in update_data.keys():
+            user.nazwisko = update_data.get("nazwisko")
+        db.session.commit()
     
     def find_by_username(self, username: str) -> User:
         """Get user by its username"""
@@ -116,6 +136,9 @@ class MachineController(Controller):
             machines = Machine.query.all()
 
         return machines
+    
+    def patch(self, update_data: dict):
+        pass
 
     def get(self, id: int) -> Machine:
         machine = Machine.query.filter_by(id=id).first()
@@ -162,6 +185,9 @@ class CommentsController(Controller):
             comments = Comment.query.all()
 
         return comments
+    
+    def patch(self, update_data: dict):
+        pass
 
     def get(self, id: int) -> Comment:
         comment = Comment.query.filter_by(id=id).first()
@@ -223,6 +249,18 @@ class OffersController(Controller):
             offers = Offer.query.all()
 
         return offers
+    
+    def patch(self, update_data: dict):
+        offer = self.get(update_data.get("id"))
+        if "name" in update_data.keys():
+            offer.name = update_data.get("name")
+        if "description" in update_data.keys():
+            offer.description = update_data.get("description")
+        if "status" in update_data.keys():
+            offer.status = update_data.get("status")
+        if "date" in update_data.keys():
+            offer.date = update_data.get("date")
+        db.session.commit()
 
     def get(self, id: int) -> Offer:
         offer = Offer.query.filter_by(id=id).first()

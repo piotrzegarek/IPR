@@ -19,3 +19,7 @@ class Controller(ABC):
     @abstractmethod
     def get(self, id: int):
         pass
+
+    @abstractmethod
+    def patch(self, update_data: dict):
+        pass

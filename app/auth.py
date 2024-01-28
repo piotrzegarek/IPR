@@ -7,8 +7,8 @@ from .models import UserController
 class AuthService:
     """Manager for handling user login and profile actions."""
     def __init__(self, username):
-        user_controller = UserController()
-        self.user = user_controller.find_by_username(username=username)
+        self.user_controller = UserController()
+        self.user = self.user_controller.find_by_username(username=username)
 
     def login(self, password: str) -> None:
         """Login user."""
@@ -29,8 +29,11 @@ class AuthService:
         if self.user:
             is_valid = bcrypt.check_password_hash(self.user.password, old_password)
             if is_valid and new_password == confirm_password:
-                self.user.password = bcrypt.generate_password_hash(new_password).decode('utf-8') 
-                db.session.commit()
+                self.user_controller.patch({
+                    "id": self.user.id,
+                    "password": bcrypt.generate_password_hash(new_password).decode('utf-8')
+                })
+
                 return True
 
         return False
