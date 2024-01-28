@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+{% endblock css %}
+
+{% block content %}
+
+<div class="main-box">
+    <p class="title-text text-center">Menu Glowne</p>
+    <div class="buttons-container">
+        <div class="btns-wrapper mt-5">
+            <div class="row">
+                <a class="actionBtn col" href="{{ url_for('warehouse') }}">
+                    <p>Stan magazynu</p>
+                </a>
+                <a class="actionBtn col" href="#">
+                    <p>Oferty zakupowe</p>
+                </a>
+            </div>
+            <div class="row">
+                <a class="actionBtn col" href="{{ url_for('logout') }}">
+                    <p>Wyloguj</p>
+                </a>
+                <a class="actionBtn col" href="{{ url_for('change_password') }}">
+                    <p>Zmien haslo</p>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

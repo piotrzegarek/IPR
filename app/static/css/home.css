@@ -1,0 +1,42 @@
+.title-text {
+    font-size: 3rem;
+    font-weight: 500;
+    height: 10vh;
+    background-color: #16aa10;
+    padding: 1rem 0;
+    margin-bottom: 0;
+}
+
+.buttons-container {
+    height: 90vh;
+    background-color: #8cdf89;
+    display: flex;
+    justify-content: center;
+}
+
+.btns-wrapper {
+    width: 60%;
+}
+
+.actionBtn {
+    padding: 0;
+    width: 50%;
+    background-color: #16aa10;
+    height: 20vh;
+    border: 1px solid #000;
+    border-radius: 10%;
+    margin: 40px 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    color: #000;
+}
+.actionBtn:hover {
+    cursor: pointer;
+    background-color: #4cc248;
+}
+
+.actionBtn p {
+    font-size: 2rem;
+}

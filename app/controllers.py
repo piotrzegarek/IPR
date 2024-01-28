@@ -1,9 +1,11 @@
 from abc import ABC, abstractmethod
 from typing import Optional
 
+
 class Controller(ABC):
+    """Base abstract class of db models controller."""
     @abstractmethod
-    def add(self):
+    def add(self, obj):
         pass
 
     @abstractmethod
@@ -15,5 +17,5 @@ class Controller(ABC):
         pass
 
     @abstractmethod
-    def get(self):
+    def get(self, id: int):
         pass

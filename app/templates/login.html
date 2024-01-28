@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}Login{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+{% endblock css %}
+
+{% block content %}
+
+<div class="main-box">
+    <p class="title-text text-center">Ekran logowania</p>
+    <div class="form-container">
+        <form class="loginForm" method="POST" action="/login">
+            {{ form.csrf_token }}
+            <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Login</label>
+                {{ form.username(class_="form-control") }}
+                {% if form.username.errors %}
+                    <ul class=errors>
+                    {% for error in form.username.errors %}
+                    <li>{{ error }}</li>
+                    {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+            <div class="mb-3">
+                <label for="exampleInputPassword1" class="form-label">Haslo</label>
+                {{ form.password(class_="form-control") }}
+                {% if form.password.errors %}
+                    <ul class=errors>
+                    {% for error in form.password.errors %}
+                    <li>{{ error }}</li>
+                    {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+
+            <button type="submit" class="btn btn-primary mt-3">Zaloguj</button>
+            {% if error == true %}
+                <p>Logowanie nie powiodlo sie, sprobuj ponownie.</p>
+            {% endif %}
+        </form>
+    </div>
+</div>
+
+{% endblock content %}

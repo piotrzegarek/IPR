@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% block title %}Magazyn{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/new_offer.css') }}">
+{% endblock css %}
+
+{% block content %}
+
+<div class="main-box">
+    <a href="{{ url_for('offers') }}" type="button" class="backBtn btn mt-3">Wroc</a>
+    <p class="title-text text-center">Stworz oferte</p>
+    <div class="form-wrapper">
+
+        <form class="search-form" method="POST" action="/offers/new">
+            {{ form.csrf_token }}
+            <div class="row mt-2">
+                <div class="col-md-5">
+                    <div class="form-group">
+                        <label class="form-label">Nazwa oferty:</label>
+                        {{ form.name(class_="form-control") }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-2">
+                <div class="col-md-5">
+                    <div class="form-group">
+                        <label class="form-label">Data:</label>
+                        {{ form.date(class_="form-control") }}
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="form-group">
+                        <label class="form-label">Przez:</label>
+                        {{ form.model(class_="form-control") }}
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group mt-2">
+                        <button type="submit" class="search-btn form-control btn mt-3">Stworz oferte</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-2">
+                <div class="col-md-5">
+                    <div class="form-group">
+                        <label class="form-label">Wprowadz opis oferty:</label>
+                        {{ form.description(class_="form-control") }}
+                    </div>
+                </div>
+            </div>
+
+        </form>
+
+    </div>
+    <div class="table-container">
+        <table class="table">
+        <thead>
+            <tr>
+                <th width="45%">Nazwa</th>
+                <th width="45%">Model</th>
+                <th width="10%">Ilosc na stanie</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in data %}
+                <tr>
+                    <td>{{item.name}}</td>
+                    <td>{{item.model}}</td>
+                    <td>{{item.count}}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+        </table>
+    </div>
+</div>
+{% endblock content %}
