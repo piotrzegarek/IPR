@@ -12,6 +12,7 @@ class User(db.Model):
     imie = db.Column(db.String(120), nullable=False)
     nazwisko = db.Column(db.String(120), nullable=False)
     authenticated = db.Column(db.Boolean, default=False)
+    buyer = db.relationship("Buyer", uselist=False, backref="buyer")
     
     def is_active(self):
         """True, as all users are active."""
@@ -30,13 +31,15 @@ class User(db.Model):
         return False
 
 
-class Buyer(User):
+class Buyer(db.Model):
     __tablename__ = "buyer"
+    id = db.Column(db.Integer, primary_key=True)
     department = db.Column(db.String(120), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
     def __init__(self):
-        self.offer_controller = OffersController()
-        self.comment_controler = CommentsController()
+        self.offers_controller = OffersController()
+        self.comments_controller = CommentsController()
 
 
 class UserController(Controller):
@@ -122,7 +125,79 @@ class Comment(db.Model):
 
 
 class CommentsController(Controller):
-    pass
+    def add(self, obj: Machine) -> Machine:
+        db.session.add(obj)
+        db.session.commit()
+        db.session.flush() # Refresh obj with machine id
+
+        return obj
+    
+    def delete(self, id: int):
+        machine = Machine.query.filter_by(id=id).first()
+
+        if machine:
+            db.session.delete(machine)
+            db.session.commit()
+
+    def list(self, filters: Optional[dict] = None):
+        if filters:
+            mach_query = Machine.query.with_entities(
+                Machine.name, Machine.model, func.count().label('count')
+                ) \
+                .group_by(Machine.name, Machine.model) \
+                .order_by(Machine.name)
+            if "owned" in filters.keys():
+                mach_query = mach_query.filter_by(owned=True)
+            if "name" in filters.keys():
+                mach_query = mach_query.filter(Machine.name.ilike(f"%{filters['name']}%"))
+            if "model" in filters.keys():
+                mach_query = mach_query.filter(Machine.model.ilike(f"%{filters['model']}%"))
+            machines = mach_query.all()
+        else:
+            machines = Machine.query.all()
+
+        return machines
+
+    def get(self, id: int) -> Machine:
+        machine = Machine.query.filter_by(id=id).first()
+        return machine
+    
 
 class OffersController(Controller):
-    pass
+    def add(self, obj: Machine) -> Machine:
+        db.session.add(obj)
+        db.session.commit()
+        db.session.flush() # Refresh obj with machine id
+
+        return obj
+    
+    def delete(self, id: int):
+        machine = Machine.query.filter_by(id=id).first()
+
+        if machine:
+            db.session.delete(machine)
+            db.session.commit()
+
+    def list(self, filters: Optional[dict] = None):
+        if filters:
+            mach_query = Machine.query.with_entities(
+                Machine.name, Machine.model, func.count().label('count')
+                ) \
+                .group_by(Machine.name, Machine.model) \
+                .order_by(Machine.name)
+            if "owned" in filters.keys():
+                mach_query = mach_query.filter_by(owned=True)
+            if "name" in filters.keys():
+                mach_query = mach_query.filter(Machine.name.ilike(f"%{filters['name']}%"))
+            if "model" in filters.keys():
+                mach_query = mach_query.filter(Machine.model.ilike(f"%{filters['model']}%"))
+            machines = mach_query.all()
+        else:
+            machines = Machine.query.all()
+
+        return machines
+
+    def get(self, id: int) -> Machine:
+        machine = Machine.query.filter_by(id=id).first()
+        return machine
+    

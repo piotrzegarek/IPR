@@ -10,6 +10,7 @@ from .models import MachineController
 @app.route("/")
 @login_required
 def home():
+
     return render_template("home.html")
 
 
@@ -74,8 +75,7 @@ def offers():
 @app.route("/offers/new", methods=['GET', 'POST'])
 @login_required
 def new_offer():
-    form = WarehouseSearchForm(request.form)
-    OfferController.add(request.form)
+
     return render_template("new_offer.html")
 
 
@@ -87,7 +87,7 @@ def logout():
 
 
 ############################################### HELP  ROUTES
-from .models import User
+from .models import User, Buyer
 from app import bcrypt, db
 
 @app.route("/add-user")
@@ -101,4 +101,10 @@ def add_user():
     )
     db.session.add(user)
     db.session.commit()
-    return 200
+
+    buyer = Buyer()
+    buyer.user_id = user.id
+    buyer.department = "Department A"
+    db.session.add(buyer)
+    db.session.commit()
+    
