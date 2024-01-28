@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Usun oferte{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+{% endblock css %}
+
+{% block content %}
+
+<div class="main-box">
+    <p class="title-text text-center">Czy na pewno chcesz usunac oferte?</p>
+    <div class="buttons-container">
+        <div class="btns-wrapper mt-5">
+            <div class="row">
+                <form class="actionBtn col" method="POST" action="/offer/delete/{{offer.id}}">
+                    {{ form.csrf_token }}
+                    <button type="submit" class="actionBtn" style="width: 100%; border: none;">
+                        <p>Tak</p>
+                    </button>
+                </form>
+                <a class="actionBtn col" href="/offer/{{offer.id}}">
+                    <p>Nie</p>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

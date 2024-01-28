@@ -118,6 +118,19 @@ def view_offer(id: int):
     return render_template("view_offer.html", offer=offer, others=others, form=comment_form, comments=comments)
 
 
+@app.route("/offer/delete/<int:id>", methods=['GET', 'POST'])
+@login_required
+def delete_offer(id: int):
+    form = AddCommentForm()
+    controller = OffersController()
+    offer = controller.get(id)
+    if request.method == 'POST':
+        controller.delete(id)
+        return redirect(url_for('offers'))
+
+    return render_template("delete_offer.html", offer=offer, form=form)
+
+
 @app.route("/add-comment", methods=['POST'])
 @login_required
 def add_comment():
