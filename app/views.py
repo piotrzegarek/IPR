@@ -134,6 +134,7 @@ def add_comment():
     return redirect(url_for('view_offer', id=request.form.get("offer_id")))
 
 
+
 @app.route("/logout")
 @login_required
 def logout():
