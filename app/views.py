@@ -2,9 +2,9 @@ from flask import jsonify, redirect, url_for, request, render_template
 from flask_login import login_required, logout_user, current_user
 
 from app import app
-from .forms import LoginForm, ChangePasswordForm, WarehouseSearchForm
+from .forms import LoginForm, ChangePasswordForm, WarehouseSearchForm, OfferCreateForm
 from .auth import AuthService
-from .models import MachineController
+from .models import MachineController, Offer
 
 
 @app.route("/")
@@ -75,8 +75,20 @@ def offers():
 @app.route("/offers/new", methods=['GET', 'POST'])
 @login_required
 def new_offer():
-
-    return render_template("new_offer.html")
+    form = OfferCreateForm()
+    if request.method == 'POST' and form.validate():
+        data = request.form
+        offer = Offer(
+            name=data.get("name"),
+            description=data.get("description"),
+            date=data.get("date"),
+            author_id=current_user.id
+        )
+        buyer = Buyer()
+        buyer.offers_controller.add(offer)
+        return render_template("new_offer.html", form=form, success=True)
+        
+    return render_template("new_offer.html", form=form)
 
 
 @app.route("/logout")

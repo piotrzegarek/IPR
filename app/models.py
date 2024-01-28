@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import Optional
 from sqlalchemy.sql import func
 
@@ -125,79 +126,56 @@ class Comment(db.Model):
 
 
 class CommentsController(Controller):
-    def add(self, obj: Machine) -> Machine:
+    def add(self, obj: Comment) -> Comment:
         db.session.add(obj)
         db.session.commit()
-        db.session.flush() # Refresh obj with machine id
+        db.session.flush() # Refresh obj with comment id
 
         return obj
     
     def delete(self, id: int):
-        machine = Machine.query.filter_by(id=id).first()
+        comment = Comment.query.filter_by(id=id).first()
 
-        if machine:
-            db.session.delete(machine)
+        if comment:
+            db.session.delete(comment)
             db.session.commit()
 
     def list(self, filters: Optional[dict] = None):
-        if filters:
-            mach_query = Machine.query.with_entities(
-                Machine.name, Machine.model, func.count().label('count')
-                ) \
-                .group_by(Machine.name, Machine.model) \
-                .order_by(Machine.name)
-            if "owned" in filters.keys():
-                mach_query = mach_query.filter_by(owned=True)
-            if "name" in filters.keys():
-                mach_query = mach_query.filter(Machine.name.ilike(f"%{filters['name']}%"))
-            if "model" in filters.keys():
-                mach_query = mach_query.filter(Machine.model.ilike(f"%{filters['model']}%"))
-            machines = mach_query.all()
-        else:
-            machines = Machine.query.all()
+        pass
 
-        return machines
-
-    def get(self, id: int) -> Machine:
-        machine = Machine.query.filter_by(id=id).first()
-        return machine
+    def get(self, id: int) -> Comment:
+        comment = Comment.query.filter_by(id=id).first()
+        return comment
     
+
+class Offer(db.Model):
+    __tablename__ = "offer"
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(200), nullable=False, unique=True)
+    description = db.Column(db.String(500), nullable=False)
+    date = db.Column(db.Date, default=datetime.utcnow().date)
+    author_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+
 
 class OffersController(Controller):
-    def add(self, obj: Machine) -> Machine:
+    def add(self, obj: Offer) -> Offer:
         db.session.add(obj)
         db.session.commit()
-        db.session.flush() # Refresh obj with machine id
+        db.session.flush() # Refresh obj with offer id
 
         return obj
     
     def delete(self, id: int):
-        machine = Machine.query.filter_by(id=id).first()
+        offer = Offer.query.filter_by(id=id).first()
 
-        if machine:
-            db.session.delete(machine)
+        if offer:
+            db.session.delete(offer)
             db.session.commit()
 
     def list(self, filters: Optional[dict] = None):
-        if filters:
-            mach_query = Machine.query.with_entities(
-                Machine.name, Machine.model, func.count().label('count')
-                ) \
-                .group_by(Machine.name, Machine.model) \
-                .order_by(Machine.name)
-            if "owned" in filters.keys():
-                mach_query = mach_query.filter_by(owned=True)
-            if "name" in filters.keys():
-                mach_query = mach_query.filter(Machine.name.ilike(f"%{filters['name']}%"))
-            if "model" in filters.keys():
-                mach_query = mach_query.filter(Machine.model.ilike(f"%{filters['model']}%"))
-            machines = mach_query.all()
-        else:
-            machines = Machine.query.all()
+        pass
 
-        return machines
-
-    def get(self, id: int) -> Machine:
-        machine = Machine.query.filter_by(id=id).first()
-        return machine
+    def get(self, id: int) -> Offer:
+        offer = Offer.query.filter_by(id=id).first()
+        return offer
     

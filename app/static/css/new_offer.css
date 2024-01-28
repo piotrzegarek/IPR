@@ -1,0 +1,50 @@
+.title-text {
+    font-size: 3rem;
+    font-weight: 500;
+    height: 10vh;
+    background-color: #16aa10;
+    padding: 1rem 0;
+    margin-bottom: 0;
+}
+
+.backBtn {
+    position: absolute;
+    top: 10px;
+    left: 20px;
+    background-color: #8cdf89;
+    font-size: 1.5rem;
+    width: 10%;
+}
+.backBtn:hover {
+    background-color: #bfddbe;
+}
+
+.form-wrapper {
+    height: 90vh;
+    background-color: #a6eea3;
+    display: flex;
+    justify-content: center;
+}
+
+.search-form {
+    width: 90%;
+    font-size: 1.5rem;
+}
+
+.search-form button,
+.search-form input,
+.search-form textarea {
+    width: 100%;
+    font-size: 1.5rem;
+}
+
+.create-btn {
+    background-color: #16aa10;
+    height: 6vh;
+}
+
+.create-btn:hover,
+.create-btn:active,
+.create-btn:focus {
+    background-color: #69e065;
+}
