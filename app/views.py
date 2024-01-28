@@ -118,6 +118,36 @@ def view_offer(id: int):
     return render_template("view_offer.html", offer=offer, others=others, form=comment_form, comments=comments)
 
 
+@app.route("/offer/edit/<int:id>", methods=['GET', 'POST'])
+@login_required
+def edit_offer(id: int):
+    controller = OffersController()
+    offer = controller.get(id)
+    form = OfferCreateForm(obj=offer)
+
+    if request.method == 'POST' and form.validate():
+        offer.name = request.form.get("name")
+        offer.description = request.form.get("description")
+        offer.date = request.form.get("date")
+        offer.status = request.form.get("status")
+        db.session.commit()
+        return redirect(url_for('view_offer', id=offer.id))
+
+    return render_template("edit_offer.html", offer=offer, form=form)
+
+
+@app.route("/offer/approve/<int:id>", methods=['GET'])
+@login_required
+def approve_offer(id: int):
+    controller = OffersController()
+    offer = controller.get(id)
+    if offer:
+        offer.approver_id = current_user.id
+        db.session.commit()
+
+    return redirect(url_for('edit_offer', id=offer.id))
+
+
 @app.route("/offer/delete/<int:id>", methods=['GET', 'POST'])
 @login_required
 def delete_offer(id: int):

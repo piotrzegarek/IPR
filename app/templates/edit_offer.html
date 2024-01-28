@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% block title %}Nowa oferta{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/edit_offer.css') }}">
+{% endblock css %}
+
+{% block content %}
+
+<div class="main-box">
+    <a href="/offer/{{offer.id}}" type="button" class="backBtn btn mt-3">Wroc</a>
+    <p class="title-text text-center">Edytuj oferte</p>
+    <div class="form-wrapper">
+        <form class="search-form mt-5" method="POST" action="/offer/edit/{{offer.id}}">
+            {{ form.csrf_token }}
+            <div class="row mt-2">
+                <div class="col">
+                    <div class="form-group">
+                        <label class="form-label">Nazwa oferty:</label>
+                        {{ form.name(class_="form-control") }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-2">
+                <div class="col-md-5">
+                    <div class="form-group">
+                        <label class="form-label">Data:</label>
+                        {{ form.date(class_="form-control") }}
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="form-group">
+                        <label class="form-label">Przez:</label>
+                        <input class="form-control" value="{{current_user.imie}} {{current_user.nazwisko}}" disabled></input>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group mt-4">
+                        <button type="submit" class="create-btn form-control btn mt-3">Zapisz zmiany</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-2">
+                <div class="col">
+                    <div class="form-group">
+                        <label class="form-label">Status oferty:</label>
+                        {{ form.status(class_="form-control") }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-2">
+                <div class="col">
+                    <div class="form-group">
+                        <label class="form-label">Wprowadz opis oferty:</label>
+                        {{ form.description(class_="form-control") }}
+                    </div>
+                </div>
+            </div>
+            {% if offer.approver_id == None %}
+            <div class="row mt-3">
+                <div class="col">
+                    <div class="form-group">
+                        <a href="/offer/approve/{{offer.id}}" class="btn approve-btn">Zatwierdz oferte</a>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <div class="row mt-3">
+                <div class="col">
+                    <div class="form-group">
+                        <a href="#" class="btn approve-btn" disabled>Oferta zatwierdzona</a>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+            
+        </form>
+    </div>
+
+</div>
+{% endblock content %}
