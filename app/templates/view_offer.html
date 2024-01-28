@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block title %}Przeglad oferty{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/view_offer.css') }}">
+{% endblock css %}
+
+{% block content %}
+
+<div class="main-box">
+    <a href="{{ url_for('offers') }}" type="button" class="backBtn btn mt-3">Wroc</a>
+    <p class="title-text text-center">Przeglad oferty</p>
+    <div class="name-wrapper">
+        <p>{{offer.name}}</p>
+    </div>
+    
+    <div class="info-wrapper">
+        <div class="info-div date-wrapper">
+            <p>Wystawiona: {{offer.date}}</p>
+        </div>
+        <div class="info-div author-wrapper">
+            <p>Przez: {{ offer.author }}</p>
+        </div>
+        <div class="info-div edit-wrapper" onclick="window.location='/offer/edit/{{offer.id}}'">
+            <p>Edytuj oferte</p>
+        </div>
+        <div class="info-div delete-wrapper" onclick="window.location='/offer/delete/{{offer.id}}'">
+            <p>Usun oferte</p>
+        </div>
+        <div class="info-div others-wrapper">
+            <p>Inne oferty</p>
+        </div>
+    </div>
+
+    <div class="content-wrapper">
+        <div class="content-div description-wrapper">
+            <p>Opis: {{offer.description}}</p>
+        </div>
+        <div class="content-div others-list">
+            {% for item in others %}
+                <div class="other-offer" onclick="window.location='/offer/{{item.id}}'">
+                    <p>{{item.name}}</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="comments-section">
+        {% for com in comments %}
+            <div class="comments-wrapper">
+                <div class="comment-id">
+                    <p>Komentarz {{com.id}}</p>
+                </div>
+                <div class="comment-content">
+                    <p>{{com.author}}: {{com.content}}</p>
+                </div>
+            </div>
+        {% endfor %}
+        
+    </div>
+    <div class="new-comment-wrapper">
+        <div class="info">
+            <p>Wprowadz nowy komentarz</p>
+        </div>
+        <form class="comment-form" method="POST" action="/add-comment">
+            {{ form.csrf_token }}
+            <div class="new-comment-content">
+                {{form.content}}
+                <input type="hidden" id="offer_id" name="offer_id" value="{{offer.id}}">
+            </div>
+            <div class="new-coment-submit">
+                <button type="submit" class="btn">Dodaj komentarz</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock content %}

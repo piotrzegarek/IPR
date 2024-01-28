@@ -1,10 +1,10 @@
-from flask import jsonify, redirect, url_for, request, render_template
-from flask_login import login_required, logout_user, current_user
+from flask import redirect, url_for, request, render_template
+from flask_login import login_required, current_user
 
 from app import app
-from .forms import LoginForm, ChangePasswordForm, WarehouseSearchForm, OfferCreateForm, OfferSearchForm
+from .forms import LoginForm, ChangePasswordForm, WarehouseSearchForm, OfferCreateForm, OfferSearchForm, AddCommentForm
 from .auth import AuthService
-from .models import MachineController, Offer, OffersController
+from .models import MachineController, Offer, OffersController, CommentsController, Comment
 
 
 @app.route("/")
@@ -105,10 +105,40 @@ def new_offer():
     return render_template("new_offer.html", form=form)
 
 
+@app.route("/offer/<int:id>", methods=['GET','POST'])
+@login_required
+def view_offer(id: int):
+    controller = OffersController()
+    offer = controller.get(id)
+    others = controller.list({"exclude": offer.id})
+    comment_form = AddCommentForm()
+    comments_controller = CommentsController()
+    comments = comments_controller.list({"offer_id": id})
+
+    return render_template("view_offer.html", offer=offer, others=others, form=comment_form, comments=comments)
+
+
+@app.route("/add-comment", methods=['POST'])
+@login_required
+def add_comment():
+    form = AddCommentForm(request.form)
+
+    if form.validate():
+        new_comment = Comment()
+        new_comment.content = request.form.get("content")
+        new_comment.offer_id = request.form.get("offer_id")
+        new_comment.author_id = current_user.id
+        controller = CommentsController()
+        controller.add(new_comment)
+    
+    return redirect(url_for('view_offer', id=request.form.get("offer_id")))
+
+
 @app.route("/logout")
 @login_required
 def logout():
-    logout_user()
+    user = User()
+    user.logout()
     return redirect(url_for('login'))
 
 

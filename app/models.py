@@ -1,6 +1,7 @@
 from datetime import datetime
 from typing import Optional
-from sqlalchemy.sql import func
+from sqlalchemy.sql import func, desc
+from flask_login import logout_user
 
 from app import db
 from .controllers import Controller
@@ -30,6 +31,9 @@ class User(db.Model):
     def is_anonymous(self):
         """False, as anonymous users aren't supported."""
         return False
+    
+    def logout(self):
+        logout_user()
 
 
 class Buyer(db.Model):
@@ -122,7 +126,14 @@ class Comment(db.Model):
     __tablename__ = "comment"
     id = db.Column(db.Integer, primary_key=True)
     author_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    offer_id = db.Column(db.Integer, db.ForeignKey('offer.id'), nullable=False)
     content = db.Column(db.String(400), nullable=False)
+
+    @property
+    def author(self):
+        user = UserController().get(self.author_id)
+        return f"{user.imie} {user.nazwisko}"
+        
 
 
 class CommentsController(Controller):
@@ -141,7 +152,16 @@ class CommentsController(Controller):
             db.session.commit()
 
     def list(self, filters: Optional[dict] = None):
-        pass
+        if filters:
+            comments_query = Comment.query.order_by(Comment.id)
+            if "offer_id" in filters.keys():
+                comments_query = comments_query.filter_by(offer_id=filters["offer_id"])
+
+            comments = comments_query.all()
+        else:
+            comments = Comment.query.all()
+
+        return comments
 
     def get(self, id: int) -> Comment:
         comment = Comment.query.filter_by(id=id).first()
@@ -196,6 +216,8 @@ class OffersController(Controller):
                 offer_query = offer_query.filter(Offer.status.ilike(f"%{filters['status']}%"))
             if "date" in filters.keys():
                 offer_query = offer_query.filter(Offer.date == filters["date"])
+            if "exclude" in filters.keys():
+                offer_query = offer_query.filter(Offer.id != filters["exclude"])
             offers = offer_query.all()
         else:
             offers = Offer.query.all()

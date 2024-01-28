@@ -1,6 +1,6 @@
 from datetime import datetime
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, TextAreaField, DateField
+from wtforms import StringField, PasswordField, TextAreaField, DateField, IntegerField
 from wtforms.validators import DataRequired, Length, Optional
 
 
@@ -28,3 +28,7 @@ class OfferSearchForm(FlaskForm):
     status=StringField("Status")
     author=StringField("Author")
     date=DateField("Date", validators=[Optional()])
+
+class AddCommentForm(FlaskForm):
+    content=StringField("content", validators=[DataRequired(), Length(min=1, max=500)])
+    offer_id=IntegerField()

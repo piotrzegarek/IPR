@@ -68,3 +68,8 @@ table th {
 .create-btn {
     padding-top: 10px;
 }
+
+.clickable:hover td {
+    background-color: #ccf8cb;
+    cursor: pointer;
+}

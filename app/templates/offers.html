@@ -61,7 +61,7 @@
         </thead>
         <tbody>
             {% for item in data %}
-                <tr>
+                <tr class="clickable" onclick="window.location='/offer/{{item.id}}'">
                     <td>{{item.name}}</td>
                     <td>{{item.status}}</td>
                     <td>{{item.date}}</td>
