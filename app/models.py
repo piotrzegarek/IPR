@@ -6,6 +6,7 @@ from flask_login import logout_user
 from app import db
 from .controllers import Controller
 
+
 class User(db.Model):
     __tablename__ = "user"
     id = db.Column(db.Integer, primary_key=True)
@@ -56,7 +57,6 @@ class Buyer(db.Model):
         })
         
 
-
 class UserController(Controller):
     def add(self, obj: User) -> User:
         db.session.add(obj)
@@ -89,7 +89,7 @@ class UserController(Controller):
             user.nazwisko = update_data.get("nazwisko")
         db.session.commit()
     
-    def find_by_username(self, username: str) -> User:
+    def getLogin(self, username: str) -> User:
         """Get user by its username"""
         user = User.query.filter_by(username=username).first()
         return user
@@ -158,7 +158,6 @@ class Comment(db.Model):
         return f"{user.imie} {user.nazwisko}"
         
 
-
 class CommentsController(Controller):
     def add(self, obj: Comment) -> Comment:
         db.session.add(obj)
@@ -225,7 +224,7 @@ class OffersController(Controller):
         db.session.flush() # Refresh obj with offer id
 
         return obj
-    
+
     def delete(self, id: int):
         offer = Offer.query.filter_by(id=id).first()
 
@@ -265,4 +264,3 @@ class OffersController(Controller):
     def get(self, id: int) -> Offer:
         offer = Offer.query.filter_by(id=id).first()
         return offer
-    

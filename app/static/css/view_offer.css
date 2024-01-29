@@ -148,7 +148,7 @@
     display: flex;
     height: 7vh;
     align-items: center;
-    width: 90%;
+    width: 80%;
     border-bottom: 1px solid #000;
     overflow-y: auto;
 }
@@ -156,6 +156,26 @@
     margin: 0;
     font-size: 1.2rem;
     padding-left: 10px;
+}
+
+.comment-remove {
+    background-color: #d22727;
+    display: flex;
+    height: 7vh;
+    align-items: center;
+    width: 10%;
+    border-bottom: 1px solid #000;
+    overflow-y: auto;
+}
+.comment-remove p {
+    margin: 0;
+    font-size: 1.2rem;
+    padding-left: 10px;
+}
+
+.comment-remove:hover {
+    cursor: pointer;
+    background-color: #d22727;
 }
 
 .new-comment-wrapper {

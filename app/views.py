@@ -10,7 +10,6 @@ from .models import MachineController, Offer, OffersController, CommentsControll
 @app.route("/")
 @login_required
 def home():
-
     return render_template("home.html")
 
 
@@ -124,13 +123,15 @@ def edit_offer(id: int):
     controller = OffersController()
     offer = controller.get(id)
     form = OfferCreateForm(obj=offer)
+    edited = False
 
     if request.method == 'POST' and form.validate():
         buyer = Buyer()
         buyer.edit_offer(offer.id, request.form)
-        return redirect(url_for('view_offer', id=offer.id))
+        edited = True
+        form = OfferCreateForm(obj=offer)
 
-    return render_template("edit_offer.html", offer=offer, form=form)
+    return render_template("edit_offer.html", offer=offer, form=form, edited=edited)
 
 
 @app.route("/offer/approve/<int:id>", methods=['GET'])
@@ -152,7 +153,8 @@ def delete_offer(id: int):
     controller = OffersController()
     offer = controller.get(id)
     if request.method == 'POST':
-        controller.delete(id)
+        buyer = Buyer()
+        buyer.offers_controller.delete(id)
         return redirect(url_for('offers'))
 
     return render_template("delete_offer.html", offer=offer, form=form)
@@ -168,12 +170,18 @@ def add_comment():
         new_comment.content = request.form.get("content")
         new_comment.offer_id = request.form.get("offer_id")
         new_comment.author_id = current_user.id
-        controller = CommentsController()
-        controller.add(new_comment)
-    
+        buyer = Buyer()
+        buyer.comments_controller.add(new_comment)
+
     return redirect(url_for('view_offer', id=request.form.get("offer_id")))
 
-
+@app.route("/remove-comment/<int:offer_id>/<int:id>", methods=['GET', 'POST'])
+@login_required
+def remove_comment(offer_id: int, id: int):
+    buyer = Buyer()
+    buyer.comments_controller.delete(id)
+    
+    return redirect(url_for('view_offer', id=offer_id))
 
 @app.route("/logout")
 @login_required
@@ -181,6 +189,7 @@ def logout():
     user = User()
     user.logout()
     return redirect(url_for('login'))
+
 
 
 ############################################### HELP  ROUTES

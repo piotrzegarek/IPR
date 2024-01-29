@@ -53,6 +53,9 @@
                 <div class="comment-content">
                     <p>{{com.author}}: {{com.content}}</p>
                 </div>
+                <div class="comment-remove" onclick="window.location='/remove-comment/{{offer.id}}/{{com.id}}'">
+                    <p>Usun</p>
+                </div>
             </div>
         {% endfor %}
         

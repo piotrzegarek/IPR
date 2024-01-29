@@ -8,7 +8,7 @@ class AuthService:
     """Manager for handling user login and profile actions."""
     def __init__(self, username):
         self.user_controller = UserController()
-        self.user = self.user_controller.find_by_username(username=username)
+        self.user = self.user_controller.getLogin(username=username)
 
     def login(self, password: str) -> None:
         """Login user."""
