@@ -15,6 +15,7 @@ class User(db.Model):
     imie = db.Column(db.String(120), nullable=False)
     nazwisko = db.Column(db.String(120), nullable=False)
     authenticated = db.Column(db.Boolean, default=False)
+    email = db.Column(db.String(120), nullable=False, unique=True)
     buyer = db.relationship("Buyer", uselist=False, backref="buyer")
     
     def is_active(self):
@@ -87,6 +88,8 @@ class UserController(Controller):
             user.imie = update_data.get("imie")
         if "nazwisko" in update_data.keys():
             user.nazwisko = update_data.get("nazwisko")
+        if "email" in update_data.keys():
+            user.email = update_data.get("email")
         db.session.commit()
     
     def getLogin(self, username: str) -> User:

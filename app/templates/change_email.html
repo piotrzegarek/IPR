@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}Zmiana hasla{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+{% endblock css %}
+
+{% block content %}
+
+<div class="main-box">
+    <a href="{{ url_for('home') }}" type="button" class="backBtn btn mt-3">Wroc</a>
+    <p class="title-text text-center">Zmiana emailu</p>
+    <div class="form-container">
+        <form class="loginForm" method="POST" action="/change-email">
+            {{ form.csrf_token }}
+            <div class="mb-3">
+                <label class="form-label">Stary email</label>
+                {{ form.old_email(class_="form-control") }}
+                {% if form.old_email.errors %}
+                    <ul class=errors>
+                    {% for error in form.old_email.errors %}
+                    <li>{{ error }}</li>
+                    {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Nowy email</label>
+                {{ form.new_email(class_="form-control") }}
+                {% if form.new_email.errors %}
+                    <ul class=errors>
+                    {% for error in form.new_email.errors %}
+                    <li>{{ error }}</li>
+                    {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+
+            <button type="submit" class="btn btn-primary mt-3">Zatwierdz</button>
+            {% if error == true %}
+                <p>Zmiana emaila nie powiodla sie, sprobuj ponownie.</p>
+            {% endif %}
+            {% if success == true %}
+                <p>Email zostal zmieniony.</p>
+            {% endif %}
+        </form>
+    </div>
+</div>
+
+{% endblock content %}

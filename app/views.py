@@ -2,7 +2,7 @@ from flask import redirect, url_for, request, render_template
 from flask_login import login_required, current_user
 
 from app import app
-from .forms import LoginForm, ChangePasswordForm, WarehouseSearchForm, OfferCreateForm, OfferSearchForm, AddCommentForm
+from .forms import LoginForm, ChangePasswordForm, WarehouseSearchForm, OfferCreateForm, OfferSearchForm, AddCommentForm, ChangeEmailForm
 from .auth import AuthService
 from .models import MachineController, Offer, OffersController, CommentsController, Comment
 
@@ -44,6 +44,21 @@ def change_password():
             return render_template('change_password.html', form=form, error=True)
 
     return render_template('change_password.html', form=form)
+
+@app.route("/change-email", methods=['GET','POST'])
+@login_required
+def change_email():
+    form = ChangeEmailForm(request.form)
+
+    if request.method == 'POST' and form.validate():
+        data = request.form
+        auth = AuthService(current_user.username)
+        if auth.changeEmail(data.get("old_email"), data.get("new_email")):
+            return render_template('change_email.html', form=form, success=True)
+        else:
+            return render_template('change_email.html', form=form, error=True)
+
+    return render_template('change_email.html', form=form)
 
 
 @app.route("/warehouse", methods=['GET','POST'])

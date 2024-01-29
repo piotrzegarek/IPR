@@ -23,6 +23,18 @@ class AuthService:
             return is_valid
         
         return False
+    
+    def changeEmail(self, old_email: str, new_email: str) -> bool:
+        """Check if old email mathes, if so - update user email with new one."""
+        if self.user:
+            if self.user.email == old_email:
+                self.user_controller.patch({
+                    "id": self.user.id,
+                    "email": new_email
+                })
+                return True
+            
+        return False
 
     def changePassword(self, old_password: str, new_password: str, confirm_password: str) -> bool:
         """Check if old password mathes, if so - update user password with new one."""

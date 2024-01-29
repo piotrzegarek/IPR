@@ -53,9 +53,11 @@
                 <div class="comment-content">
                     <p>{{com.author}}: {{com.content}}</p>
                 </div>
+                {% if com.author_id == current_user.id %}
                 <div class="comment-remove" onclick="window.location='/remove-comment/{{offer.id}}/{{com.id}}'">
                     <p>Usun</p>
                 </div>
+                {% endif %}
             </div>
         {% endfor %}
         

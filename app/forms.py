@@ -12,6 +12,10 @@ class ChangePasswordForm(FlaskForm):
     old_password=PasswordField("Stare haslo", validators=[DataRequired()])
     new_password=PasswordField("Nowe haslo", validators=[DataRequired()])
     confirm_password=PasswordField("Potwierdz haslo", validators=[DataRequired()])
+    
+class ChangeEmailForm(FlaskForm):
+    old_email=StringField("Stare haslo", validators=[DataRequired()])
+    new_email=StringField("Nowe haslo", validators=[DataRequired()])
 
 class WarehouseSearchForm(FlaskForm):
     name=StringField("Name")
